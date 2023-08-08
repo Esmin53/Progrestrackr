@@ -44,6 +44,29 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+
+  Task          Task[]
+}
+
+model Step {
+  id           String     @id @default(cuid())
+  title        String
+  completed    Boolean
+  task         Task       @relation(fields: [taskId], references: [id])
+  taskId       String
+}
+
+model Task {
+  id            String    @id @default(cuid())
+  title         String
+  description   String
+  goal          Int?
+  goalProgress  Int?
+  progresPercentage Int? @default(0) 
+  Step          Step[]
+
+  author        User    @relation(fields: [authorId], references: [id])
+  authorId      String
 }
 
 model VerificationToken {

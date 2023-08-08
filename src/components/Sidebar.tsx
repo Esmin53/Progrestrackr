@@ -9,13 +9,13 @@ interface SidebarProps {
 
 const Sidebar = async ({}) => {
 
-    const session = await getServerSession(authOptions)
+  const session = await getServerSession(authOptions)
 
-  return <div className='min-h-screen w-64 bg-slate-800 shadow flex flex-col px-2 py-4'>
+  return <div className='min-h-screen w-64 bg-slate-800 shadow flex flex-col px-2 py-4 fixed -right-0 '>
     <div className='flex items-center justify-between'>
         <h1 className='text-xl font-semibold'>Progrestrackr</h1>
     </div>
-    <div className='w-full h-[1px] bg-emerald-500 sm:mb-20 mt-1' />
+    <div className='w-full h-[1px] bg-emerald-500 sm:mb-20 mt-5' />
     <SidebarNavigation />
     <div className='flex justify-between items-center mt-auto'>
         <p>{session?.user.name}</p>
