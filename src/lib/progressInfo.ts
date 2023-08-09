@@ -11,7 +11,7 @@ export const progressInfo = (currentProgress: number | null) => {
     } else if(currentProgress! >= 41 && currentProgress! < 61) {
         progresColor = '-amber-500'
     } else if( currentProgress! >= 61 && currentProgress! < 80) {
-        progresColor = '-lime-400'
+        progresColor = '-lime-300'
     } else {
         progresColor = '-emerald-500'
     }

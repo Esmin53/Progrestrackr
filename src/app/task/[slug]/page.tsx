@@ -1,5 +1,6 @@
 import ProgresBar from "@/components/ProgresBar"
 import UpdateGoal from "@/components/UpdateGoal"
+import UpdateSteps from "@/components/UpdateSteps"
 import { db } from "@/lib/db"
 import { Step } from "@prisma/client"
 
@@ -41,9 +42,9 @@ const page = async ({params}: pageProps) => {
             <div className="w-2/3 p-2">
                 <h1 className="text-4xl font-semibold pb-6 border-b border-slate-800 border-b-2">{task?.title}</h1>
                 <p className="text-2xl mt-4">{task?.description}</p>
-                <h1 className="text-4xl font-bold ml-2 my-6">{task?.progresPercentage}% Completed</h1>
+                <h1 className="text-5xl font-bold ml-2 my-6">{task?.progresPercentage}% Completed</h1>
                 <div className="w-full h-12">
-                    <ProgresBar props={{currentProgress: task?.progresPercentage || null}}/>
+                    <ProgresBar props={{currentProgress: task?.progresPercentage!}} />
                 </div>
                 {task?.type === 'steps' && (
                 <p className="mt-2 text-md font-semibold">You have completed {completedSteps} out of {steps && steps?.length} steps</p>)} 
@@ -64,7 +65,15 @@ const page = async ({params}: pageProps) => {
                     }
             </div>  
         </div>
-         {task?.type === 'goal' && <UpdateGoal props={{goal: task?.goal, currentProgress: task?.goalProgress }} />}           
+        <div className='w-full h-[1px] bg-emerald-500 my-4'/>
+         {task?.type === 'goal' && <UpdateGoal 
+         props={{goal: task?.goal, 
+                currentProgress: task?.goalProgress,
+                taskId: task.id }} />} 
+        {task?.type === 'steps' && <UpdateSteps props={{
+            taskId: task.id,
+            steps: steps!
+        }}/>}          
     </div>
     )
 }
