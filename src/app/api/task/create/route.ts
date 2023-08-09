@@ -39,7 +39,8 @@ export async function POST(req: Request){
                     description: description,
                     goal: goal,
                     goalProgress: goalProgress || 0,
-                    progresPercentage: percentage
+                    progresPercentage: percentage,
+                    type: type
                 }
             })
         }
@@ -51,7 +52,8 @@ export async function POST(req: Request){
                     authorId: session.user.id,
                     title: title,
                     description: description,
-                    progresPercentage: 0
+                    progresPercentage: 0,
+                    type: type
                 }
             })
 

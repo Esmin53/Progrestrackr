@@ -3,6 +3,7 @@
 import {BiArrowBack} from "react-icons/bi"
 import {IoFootsteps} from "react-icons/io5"
 import {MdIncompleteCircle} from "react-icons/md"
+import {ImSpinner6} from "react-icons/im"
 import { FC, ReactEventHandler, useState } from 'react'
 import { TaskCreationRequest, TaskValidator, taskTypeEnum } from "@/lib/validators/post"
 import { useForm } from "react-hook-form"
@@ -22,6 +23,7 @@ type FormValues = {
 
 const NewTaskForm: FC<NewTaskFormProps> = ({}) => {
     const [isSteps, setIsSteps] = useState<boolean>(true)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
     const [steps, setSteps] = useState<string[]>([])
     const [currentStepPlaceholder, setCurrentStepPlaceholder] = useState<string>("")
     const [type, setType] = useState<taskTypeEnum>('steps')
@@ -35,6 +37,7 @@ const NewTaskForm: FC<NewTaskFormProps> = ({}) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
+        setIsLoading(true)
         try {
             const payload = {
                 title: formInput.title,
@@ -49,6 +52,8 @@ const NewTaskForm: FC<NewTaskFormProps> = ({}) => {
 
         } catch (error) {
             console.log(error)
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -68,7 +73,7 @@ const NewTaskForm: FC<NewTaskFormProps> = ({}) => {
         </div>
         <label htmlFor="title">Title</label>
         <input type="text" id="title" name="title" onChange={(e) => handleChange(e)} placeholder="Title"
-        className="w-full h-9 rounded-md bg-slate-500 focus:outline-none pl-2 mb-2"/>
+        className="w-full h-10 rounded-md bg-slate-500 focus:outline-none pl-2 mb-2"/>
         <label htmlFor="description">Add a short description: </label>
         <textarea id="description" name="description" onChange={(e) => handleChange(e)} placeholder="Description"
         className="w-full h-44 bg-slate-500 rounded-md mb-2 focus:outline-none px-2"></textarea>
@@ -142,8 +147,15 @@ const NewTaskForm: FC<NewTaskFormProps> = ({}) => {
             }}>Remove</p>
         </div> }
 
-        <button className="w-full h-10 bg-emerald-500 text-md font-semibold rounded-md mt-4"
-        type="submit" id="submit" >Add task</button>
+        <button className={`w-full h-10 text-md font-semibold rounded-md mt-4 flex items-center justify-center
+        ${isLoading ? 'bg-emerald-600' : 'bg-emerald-500'}`}
+        type="submit" id="submit" disabled={isLoading} >
+            {isLoading ? 
+                    <ImSpinner6 className="animate-spin text-xl"/>
+                : 
+                <p>Add task</p>}
+
+        </button>
     </form>
     )
 }

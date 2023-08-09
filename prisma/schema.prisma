@@ -8,6 +8,11 @@ datasource db {
   relationMode = "prisma"
 }
 
+enum VoteType {
+  goal
+  steps
+}
+
 model Account {
   id                 String  @id @default(cuid())
   userId             String
@@ -64,6 +69,7 @@ model Task {
   goalProgress  Int?
   progresPercentage Int? @default(0) 
   Step          Step[]
+  type          VoteType
 
   author        User    @relation(fields: [authorId], references: [id])
   authorId      String

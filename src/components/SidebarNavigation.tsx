@@ -11,7 +11,7 @@ interface SidebarNavigationProps {
 }
 
 const SidebarNavigation: FC<SidebarNavigationProps> = ({}) => {
-  return <ul>
+  return <ul className='w-full'>
   <Link href='/' className='text-lg p-2 rounded-md hover:bg-slate-700 cursor-pointer flex gap-2 items-center'>
       <FaHome />
       Homepage

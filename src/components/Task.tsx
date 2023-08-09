@@ -2,26 +2,13 @@ import { Task } from '@prisma/client'
 import { FC } from 'react'
 import ProgresBar from './ProgresBar'
 import { db } from '@/lib/db'
+import Link from 'next/link'
 
 interface TaskProps {
   task: Task
 }
 
-const Task: FC<TaskProps> = async ({task}) => {
-
-    let progresColor: string;
-
-    if( task.progresPercentage! >= 0 && task.progresPercentage! < 20) {
-        progresColor = '-red-500'
-    } else if( task.progresPercentage! >= 20 && task.progresPercentage! < 41) {
-        progresColor = '-orange-500'
-    } else if(task.progresPercentage! >= 41 && task.progresPercentage! < 61) {
-        progresColor = '-amber-500'
-    } else if( task.progresPercentage! >= 61 && task.progresPercentage! < 80) {
-        progresColor = '-lime-400'
-    } else {
-        progresColor = '-emerald-500'
-    }
+const Task: FC<TaskProps> = async ({task}) => {    
 
     const steps = await db.step.findMany({
         where: {
@@ -31,20 +18,18 @@ const Task: FC<TaskProps> = async ({task}) => {
 
     const stepsCount = steps && steps.reduce((accumulator, currentValue) => {
         if(currentValue.completed === true) return accumulator + 1
-        if(currentValue.completed === false) return accumulator - 1
+        if(currentValue.completed === false && accumulator !== 0) return accumulator - 1
         return accumulator
     }, 0) 
-
-    console.log(stepsCount)
     
 
   return <div className='w-full h-64 bg-slate-600 rounded-lg p-2 shadow'>
     <h1 className='text-xl font-semibold'>{task.title}</h1>
     <p className='text-md'>{task.description}</p>
     <div className='w-full h-12'>
-        <ProgresBar progresColor={progresColor}/>
+        <ProgresBar props={{currentProgress: task.progresPercentage}}/>
     </div>
-    <button className='w-full mt-auto h-12 bg-zinc-900 rounded-md'>See more</button>
+    <Link href={`/task/${task.id}`} className='w-full mt-auto h-12 bg-zinc-900 rounded-md'>See more</Link>
   </div>
 }
 
